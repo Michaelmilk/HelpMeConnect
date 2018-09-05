@@ -1,0 +1,40 @@
+* {
+    box-shadow: none !important;
+    outline: none !important;
+    /* border-width: 0; */
+}
+
+html, 
+body {
+    height: 100%;
+}
+
+
+.search{
+    width: 1200px;
+    height: 100%;
+    margin: 0 auto;
+}
+
+.detail-infos{
+    padding: 15px;
+    background: #dcdcdc;
+    border: 1px solid #dddddd;
+}
+
+.strength-line{
+    display: inline-block;
+    width: 50px;
+    height: 5px;
+}
+
+.shadow-less {
+    box-shadow: none !important;
+    outline: none !important;
+    border-width: 0;
+}
+
+
+.word-break-all {
+    word-break: break-all
+}
