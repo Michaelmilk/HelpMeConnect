@@ -1,8 +1,11 @@
 import { Logger } from '../../helper/logger';
 import * as $ from 'jquery';
+import { Connection } from '../../core/graph/linkedGraph';
 
 
 export class BaseComponent {
+    Connection: typeof Connection = Connection;
+
     constructor(
         protected logger: Logger
     ) { }

@@ -31,8 +31,18 @@ export class HomeService {
 			.set("search_email", query)
 			.set("user_email", user);
 		return this.httpClient.get(
-			this.serverBaseUrl,
+			`${this.serverBaseUrl}/connection`,
 			{ params: httpParams }
 		);
-	}
+    }
+    
+    public getConnectedEntity(query: string, user: string) {
+        const httpParams = new HttpParams()
+			.set("topic", query)
+			.set("user_email", user);
+		return this.httpClient.get(
+			`${this.serverBaseUrl}/Topic`,
+			{ params: httpParams }
+		);
+    }
 }

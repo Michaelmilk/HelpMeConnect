@@ -18,9 +18,16 @@ export class GraphLink {
 
 export class GraphNode {
     constructor(
-        public id: string,
-        public photo: string,
-        public label: string,
+        public id?: string,
+        public photo?: string,
+        public label?: string,
         public profile?: any
     ){}
+}
+
+export enum Connection{
+    Unknow = 0,
+    Weak,
+    Medium,
+    Strong
 }

@@ -10,7 +10,6 @@ import { MsalModule } from './helper/msal/msal.module';
 import { MsalInterceptor } from './helper/msal/msal.interceptor';
 import { MsGraphService } from './component/base/msGraphService';
 import { PipeModule } from './pipe/pipe.module';
-import { HomeComponent } from './component/home/home.component';
 import { AppRoutingModule } from './app-routing.module';
 import { PageNotFoundComponent } from './component/notFound/pageNotFound.Component';
 import { HomeModule } from './component/home/home.module';

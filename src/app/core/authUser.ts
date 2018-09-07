@@ -12,6 +12,8 @@ export class UserProfile{
         public email?: string,
         public jobTitle?: string,
         public phone?: string,
-        public location?: string
+        public location?: string,
+        public connection?: string,
+        public photo?: any
     ){}
 }

@@ -36,5 +36,9 @@ body {
 
 
 .word-break-all {
-    word-break: break-all
+    word-break: break-all;
+}
+
+.w-80 {
+    width: 80%;
 }

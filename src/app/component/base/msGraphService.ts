@@ -34,19 +34,20 @@ export class MsGraphService {
             {
                 headers: new HttpHeaders().append('Content-Type', 'image/jpg'),
                 responseType: 'blob'
-            }).pipe(
-                catchError(err => {
-                    if (err.status == 403) {
-                        this.logger.info("error catch 403:", err);
-                        return EMPTY;
-                    } else if (err.status == 404) {
-                        this.logger.info("error catch: 404", err);
-                        return EMPTY;
-                    } else {
-                        return throwError(err);
-                    }
-                })
-            );
+            });
+            //.pipe(
+            //     catchError(err => {
+            //         if (err.status == 403) {
+            //             this.logger.info("error catch 403:", err);
+            //             return EMPTY;
+            //         } else if (err.status == 404) {
+            //             this.logger.info("error catch: 404", err);
+            //             return EMPTY;
+            //         } else {
+            //             return throwError(err);
+            //         }
+            //     })
+            // );
     }
 
     public getUserProfile(upn: string) {
