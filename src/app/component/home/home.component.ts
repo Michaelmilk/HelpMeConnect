@@ -44,7 +44,7 @@ export class HomeComponent extends BaseComponent implements OnInit {
     showLengend: boolean = true;
     colorScheme: any;
     orientation: string = "LR";
-    curve: any = shape.curveCatmullRom;
+    curve: any = shape.curveBundle.beta(1);
     selectedNodeProfile: UserProfile;
 
     isSearching: boolean;
@@ -224,15 +224,14 @@ export class HomeComponent extends BaseComponent implements OnInit {
                     let profile = new UserProfile(userProfile.displayName,
                         userProfile.userPrincipalName, userProfile.jobTitle,
                         phone, userProfile.officeLocation,
-                        t.label, Constants.defaultImage);
+                        t.label, Constants.defaultImage, t.rank);
                     this.msGraphService.getPhotoByUpn(profile.email).pipe(
                         finalize(() => {
                             if (++count == entityCount) {
                                 this.isSearching = false;
                             }
                             this.entityCards.push(profile);
-                            this.logger.info("this.entityCards1",this.entityCards)
-                            this.entityCards.sort((a, b) => this.sortByConnection(a, b));
+                            this.entityCards.sort((a,b) => a.rank - b.rank)
                         })
                     ).subscribe((photoBlob) => {
                         this.createImageFromBlob(photoBlob, profile);
@@ -250,20 +249,6 @@ export class HomeComponent extends BaseComponent implements OnInit {
                     })
             });
         })
-    }
-
-    sortByConnection(a: any, b: any) {
-        this.logger.info("connection",this.Connection[a.connection])
-        this.logger.info("connection",this.Connection[b.connection])
-        if (this.Connection[a.connection] > this.Connection[b.connection]) {
-            return -1;
-        } else if (this.Connection[a.connection] < this.Connection[b.connection]) {
-            this.logger.info("b")
-            return 1;
-        } else {
-            this.logger.info("c")
-            return 0;
-        }
     }
 
     //upn is entity's eamil in general
