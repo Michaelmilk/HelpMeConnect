@@ -3,7 +3,7 @@ import { MsalConfig } from "../app/helper/msal/msal-config";
 
 export const environmentProd = {
     production: true,
-    serverBaseUrl: "https://satoriextraction/api",
+    serverBaseUrl: "https://helpmeconnectapi.azurewebsites.net/api",
     msGraphBaseUrl: "https://graph.microsoft.com/v1.0",
     logLevel: LoggerLevel.Error,
     //params detail: https://github.com/azuread/microsoft-authentication-library-for-js/wiki/MSAL-basics
@@ -13,7 +13,7 @@ export const environmentProd = {
         tenant: 'M365x342201.onmicrosoft.com',
         redirectUrl: "https://helpmeconnect.azurewebsites.net",
         endPoints: ["https://graph.microsoft.com/v1.0/"],
-        popUp: true,
+        popUp: false,
         navigateToLoginRequestUrl: false
     } as MsalConfig
 };
