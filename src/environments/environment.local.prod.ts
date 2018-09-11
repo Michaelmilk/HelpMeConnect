@@ -1,17 +1,17 @@
 import { LoggerLevel } from "../app/core/logger";
 import { MsalConfig } from "../app/helper/msal/msal-config";
 
-export const environmentDev = {
+export const environmentLocalProd = {
     production: false,
-    serverBaseUrl: "https://ods-db/api",
+    serverBaseUrl: "https://satoriextraction/api",
     msGraphBaseUrl: "https://graph.microsoft.com/v1.0",
     logLevel: LoggerLevel.Trace,
     //params detail: https://github.com/azuread/microsoft-authentication-library-for-js/wiki/MSAL-basics
     msalConfig: {
-        clientID: 'a3c14e0b-58ca-4a62-8e88-26515c596942',
+        clientID: '986a27b6-e88e-4471-a0ba-dcd5e33477c5',
         graphScopes: ["Mail.Send", "User.Read", "User.ReadWrite", "User.ReadBasic.All", "User.Read.All", "User.ReadWrite.All", "Directory.Read.All", "Directory.ReadWrite.All", "Directory.AccessAsUser.All"],
         tenant: 'M365x342201.onmicrosoft.com',
-        redirectUrl: "https://helpmeconnectdev.azurewebsites.net",
+        redirectUrl: "http://localhost:4200",
         endPoints: ["https://graph.microsoft.com/v1.0/"],
         popUp: true,
         navigateToLoginRequestUrl: false

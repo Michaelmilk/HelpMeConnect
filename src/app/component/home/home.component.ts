@@ -8,14 +8,15 @@ import { MsGraphService } from '../base/msGraphService';
 import { AuthUser, UserProfile } from '../../core/authUser';
 import { MsalService } from '../../helper/msal/msal.service';
 import { User } from '../../../../node_modules/msal';
-import { finalize } from '../../../../node_modules/rxjs/operators';
+import { finalize, switchMap } from '../../../../node_modules/rxjs/operators';
 import { Constants } from '../../core/constants';
+import { interval } from '../../../../node_modules/rxjs';
 
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+    selector: 'app-home',
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.css']
 })
 export class HomeComponent extends BaseComponent implements OnInit {
     query: string;
@@ -44,12 +45,14 @@ export class HomeComponent extends BaseComponent implements OnInit {
 
     isSearching: boolean;
     user: AuthUser;
-    
+
     entityCards: Array<UserProfile>;
     isEntityCard: boolean;
 
     notFoundTip: string = Constants.notFoundTip;
     isNotFound: boolean;
+
+    timeInterval: any;
 
     constructor(
         public logger: Logger,
@@ -61,10 +64,17 @@ export class HomeComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.msalService.getUser().then((user: any) => {
-            this.logger.info("user", user);
-            this.user = new AuthUser(user.name, user.displayableId);
-        });
+        this.user = new AuthUser();
+        this.timeInterval = interval(1000)
+            .pipe(switchMap(() => this.msalService.getUser()))
+            .subscribe((user: any) => {
+                if (user.displayableId && !this.user.email) {
+                    this.logger.info("user", user);
+                    this.user = new AuthUser(user.name, user.displayableId);
+                    this.logger.info("clear time interval", this.user.email);
+                    this.timeInterval.unsubscribe();
+                }
+            });
 
         this.entityCards = new Array<UserProfile>();
         this.selectedNodeProfile = new UserProfile();
@@ -104,7 +114,7 @@ export class HomeComponent extends BaseComponent implements OnInit {
         let count = 0;
         nodes.forEach(t => {
             if (t.label.endsWith(".onmicrosoft.com")) {
-                this.msGraphService.getPhotoByUpn(t.label).pipe( 
+                this.msGraphService.getPhotoByUpn(t.label).pipe(
                     finalize(() => {
                         if (++count == nodeCount) {
                             this.isSearching = false;
@@ -114,17 +124,17 @@ export class HomeComponent extends BaseComponent implements OnInit {
                     this.createImageFromBlob(result, t);
                     this.logger.info("photo", t);
                 },
-                (error) => {
-                    //this.isNotFound = true;
-                    this.notFoundTip = `can't fetch the photo of ${t.label}`;
-                    this.logger.error(`${this.notFoundTip} error: `, error);
-                })
+                    (error) => {
+                        //this.isNotFound = true;
+                        this.notFoundTip = `can't fetch the photo of ${t.label}`;
+                        this.logger.error(`${this.notFoundTip} error: `, error);
+                    })
             }
         })
     }
 
     select(node: any) {
-        if (!node.label.endsWith("@m365x342201.onmicrosoft.com")) {
+        if (!node.label.toLowerCase().endsWith("onmicrosoft.com")) {
             return;
         }
 
@@ -152,24 +162,26 @@ export class HomeComponent extends BaseComponent implements OnInit {
             this.logger.info("isLoadingProfile", this.isLoadingProfile);
             this.msGraphService.getUserProfile(node.label).subscribe((userProfile: any) => {
                 this.logger.info("userProfile", userProfile);
-                node.profile = new UserProfile(userProfile.displayName, userProfile.mail, userProfile.jobTitle, userProfile.mobilePhone, userProfile.officeLocation);
+                let phone = "";
+                if (userProfile.businessPhones.length > 0) {
+                    phone = userProfile.businessPhones[0];
+                }
+                node.profile = new UserProfile(userProfile.displayName, userProfile.mail, userProfile.jobTitle, phone, userProfile.officeLocation);
                 this.selectedNodeProfile = node.profile;
                 this.isLoadingProfile = false;
             },
-            (error) => {
-                //this.isNotFound = true;
-                this.notFoundTip = `can't fetch the profile of ${node.label}`;
-                this.logger.error(`${this.notFoundTip} error: `, error);
-                this.isLoadingProfile = false;
-            })
-        } else{
+                (error) => {
+                    //this.isNotFound = true;
+                    this.notFoundTip = `can't fetch the profile of ${node.label}`;
+                    this.logger.error(`${this.notFoundTip} error: `, error);
+                    this.isLoadingProfile = false;
+                })
+        } else {
             this.selectedNodeProfile = node.profile;
         }
     }
 
     search(query: string) {
-        //waiting user's authentication
-        while (!this.user || !this.user.email);
         this.isSearching = true;
         this.isNotFound = false;
         this.notFoundTip = Constants.notFoundTip;
@@ -184,20 +196,23 @@ export class HomeComponent extends BaseComponent implements OnInit {
 
     searchKeyWords(query: string) {
         this.entityCards = new Array<UserProfile>();
-
         this.homeService.getConnectedEntity(query, this.user.email).subscribe((entities: any) => {
             let entityCount = entities.length;
             if (entityCount == 0) {
                 this.isNotFound = true;
-                this.notFoundTip = `can't get any related entities about <${query}>`;
+                this.notFoundTip = `can't get any related entities about {${query}}`;
                 this.isSearching = false;
             }
             let count = 0;
             entities.forEach(t => {
                 this.msGraphService.getUserProfile(t.email).subscribe((userProfile: any) => {
+                    let phone = "";
+                    if (userProfile.businessPhones.length > 0) {
+                        phone = userProfile.businessPhones[0];
+                    }
                     let profile = new UserProfile(userProfile.displayName,
                         userProfile.userPrincipalName, userProfile.jobTitle,
-                        userProfile.mobilePhone, userProfile.officeLocation,
+                        phone, userProfile.officeLocation,
                         t.label, Constants.defaultImage);
                     this.msGraphService.getPhotoByUpn(profile.email).pipe(
                         finalize(() => {
@@ -208,19 +223,19 @@ export class HomeComponent extends BaseComponent implements OnInit {
                             this.entityCards.push(profile);
                         })
                     ).subscribe((photoBlob) => {
-                            this.createImageFromBlob(photoBlob, profile);
-                        },
+                        this.createImageFromBlob(photoBlob, profile);
+                    },
                         (error) => {
                             //this.isNotFound = true;
                             this.notFoundTip = `can't fetch the photo of ${userProfile.userPrincipalName}`;
                             this.logger.error(`${this.notFoundTip} error: `, error);
                         })
                 },
-                (error) => {
-                    this.isNotFound = true;
-                    this.notFoundTip = `can't fetch the profile of ${t.email}`;
-                    this.logger.error(`${this.notFoundTip} error: `, error);
-                })
+                    (error) => {
+                        this.isNotFound = true;
+                        this.notFoundTip = `can't fetch the profile of ${t.email}`;
+                        this.logger.error(`${this.notFoundTip} error: `, error);
+                    })
             });
         })
     }
@@ -256,11 +271,11 @@ export class HomeComponent extends BaseComponent implements OnInit {
             this.generateGraphNode(links)
             this.isSearching = false;
         },
-        (error: any) => {
-            //this.isNotFound = true;
-            this.notFoundTip = `can't get the graph from ${this.user.email} to ${query}`;
-            this.logger.error(`${this.notFoundTip}, error: `, error);
-        });
+            (error: any) => {
+                //this.isNotFound = true;
+                this.notFoundTip = `can't get the graph from ${this.user.email} to ${query}`;
+                this.logger.error(`${this.notFoundTip}, error: `, error);
+            });
     }
 
     generateGraphLink(links: Array<GraphLink>) {

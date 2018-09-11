@@ -4,13 +4,15 @@
 
 import { environmentDev } from "./environment.dev"
 import { environmentProd } from "./environment.prod"
+import { environmentLocalProd } from "./environment.local.prod"
+import { environmentLocalDev } from "./environment.local.dev"
 
 
 const commonEnv = {
-    production: true
+    //production: true
 }
 
-export const environment = Object.assign(commonEnv, environmentProd);
+export const environment = Object.assign(commonEnv, environmentLocalDev);
 
 
 /*

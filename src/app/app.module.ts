@@ -13,6 +13,7 @@ import { PipeModule } from './pipe/pipe.module';
 import { AppRoutingModule } from './app-routing.module';
 import { PageNotFoundComponent } from './component/notFound/pageNotFound.Component';
 import { HomeModule } from './component/home/home.module';
+import { CommonModule } from '../../node_modules/@angular/common';
 
 
 @NgModule({
@@ -21,11 +22,11 @@ import { HomeModule } from './component/home/home.module';
         PageNotFoundComponent,
     ],
     imports: [
+        CommonModule,
         BrowserModule,
         HttpClientModule,
         MsalModule.forRoot(environment.msalConfig),
         PipeModule,
-        HomeModule,
         AppRoutingModule,
     ],
     providers: [
