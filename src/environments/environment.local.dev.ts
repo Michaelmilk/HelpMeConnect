@@ -13,7 +13,7 @@ export const environmentLocalDev = {
         tenant: 'M365x342201.onmicrosoft.com',
         redirectUrl: "http://localhost:4200",
         endPoints: ["https://graph.microsoft.com/v1.0/"],
-        popUp: true,
+        popUp: false,
         navigateToLoginRequestUrl: false
         //authority: "https://login.microsoftonline.com/common/",
         //validateAuthority: true,

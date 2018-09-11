@@ -20,6 +20,8 @@ import { interval } from '../../../../node_modules/rxjs';
 })
 export class HomeComponent extends BaseComponent implements OnInit {
     query: string;
+    keyWords: string;
+    isBack: boolean = false;
     strengthList: any[];
     isShowPane: boolean;
     isLoadingProfile: boolean;
@@ -29,18 +31,20 @@ export class HomeComponent extends BaseComponent implements OnInit {
     nodes: Array<any>;
     view: Array<any>;
     width: number;
-    height: number = 560;
+    height: number;
     enableZoom: boolean = true;
+    fitContainer: boolean = false;
     autoZoom: boolean = true;
     autoCenter: boolean = true;
     panOnZoom: boolean = true;
-    panOffsetX: number = 100;
-    panOffsetY: number = 10;
+    panOffsetX: number;
+    panOffsetY: number;
     zoom: number = 0.7;
+    zoomLevel: number;
     showLengend: boolean = true;
     colorScheme: any;
     orientation: string = "LR";
-    curve: any = shape.curveLinear;
+    curve: any = shape.curveCatmullRom;
     selectedNodeProfile: UserProfile;
 
     isSearching: boolean;
@@ -94,6 +98,8 @@ export class HomeComponent extends BaseComponent implements OnInit {
             }
         ];
 
+        this.width = 0.83 * $(<any>".container-fluid").width();
+        this.height = document.documentElement.clientHeight - 340;
         this.view = [this.width, this.height];
 
         this.colorScheme = {
@@ -182,6 +188,10 @@ export class HomeComponent extends BaseComponent implements OnInit {
     }
 
     search(query: string) {
+        if(this.isSearching){
+            return;
+        }
+        this.isBack = false;
         this.isSearching = true;
         this.isNotFound = false;
         this.notFoundTip = Constants.notFoundTip;
@@ -190,6 +200,7 @@ export class HomeComponent extends BaseComponent implements OnInit {
             this.searchGraph(query);
         } else {
             this.isEntityCard = true;
+            this.keyWords = query;
             this.searchKeyWords(query);
         }
     }
@@ -218,9 +229,10 @@ export class HomeComponent extends BaseComponent implements OnInit {
                         finalize(() => {
                             if (++count == entityCount) {
                                 this.isSearching = false;
-                                this.entityCards.sort((a, b) => this.sortByConnection(a, b))
                             }
                             this.entityCards.push(profile);
+                            this.logger.info("this.entityCards1",this.entityCards)
+                            this.entityCards.sort((a, b) => this.sortByConnection(a, b));
                         })
                     ).subscribe((photoBlob) => {
                         this.createImageFromBlob(photoBlob, profile);
@@ -241,11 +253,15 @@ export class HomeComponent extends BaseComponent implements OnInit {
     }
 
     sortByConnection(a: any, b: any) {
+        this.logger.info("connection",this.Connection[a.connection])
+        this.logger.info("connection",this.Connection[b.connection])
         if (this.Connection[a.connection] > this.Connection[b.connection]) {
-            return 1;
-        } else if (this.Connection[a.connection] < this.Connection[b.connection]) {
             return -1;
+        } else if (this.Connection[a.connection] < this.Connection[b.connection]) {
+            this.logger.info("b")
+            return 1;
         } else {
+            this.logger.info("c")
             return 0;
         }
     }
@@ -255,6 +271,12 @@ export class HomeComponent extends BaseComponent implements OnInit {
         this.isEntityCard = false;
         this.query = upn;
         this.search(upn);
+        this.isBack = true;
+    }
+
+    switchToEntityCards(){
+        this.isEntityCard = true;
+        this.query = this.keyWords; 
     }
 
     searchGraph(query: string) {

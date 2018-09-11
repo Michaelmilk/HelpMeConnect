@@ -13,7 +13,7 @@ export const environmentProd = {
         tenant: 'M365x342201.onmicrosoft.com',
         redirectUrl: "https://helpmeconnect.azurewebsites.net",
         endPoints: ["https://graph.microsoft.com/v1.0/"],
-        popUp: true,
+        popUp: false,
         navigateToLoginRequestUrl: false
     } as MsalConfig
 };

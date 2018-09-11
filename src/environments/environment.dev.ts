@@ -13,7 +13,7 @@ export const environmentDev = {
         tenant: 'M365x342201.onmicrosoft.com',
         redirectUrl: "https://helpmeconnectdev.azurewebsites.net",
         endPoints: ["https://graph.microsoft.com/v1.0/"],
-        popUp: true,
+        popUp: false,
         navigateToLoginRequestUrl: false
         //authority: "https://login.microsoftonline.com/common/",
         //validateAuthority: true,
