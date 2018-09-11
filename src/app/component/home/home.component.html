@@ -65,6 +65,9 @@
         </div>
     </div>
 
+    <div *ngIf="!isEntityCard && !isSearching && !isNotFound && isBack">
+        <button class="btn btn-default" (click)="backToEntityCards()"><i class="fa fa-backward"></i> Back</button>
+    </div>
     <div class="row" id="graph" *ngIf="!isEntityCard && !isSearching && !isNotFound" style="height: calc(100vh - 330px);" >
         <div id="ngx-graph" class="col-lg-10">
             <!-- https://qiita.com/someone7140/items/55aedd0a2cb7c9742c87 -->
@@ -161,10 +164,5 @@
                 </div>
             </div>
         </div>
-
     </div>
-    <div *ngIf="!isEntityCard && !isSearching && !isNotFound && isBack">
-        <button class="btn btn-default" (click)="switchToEntityCards()">Back</button>
-    </div>
-    
 </div>

@@ -172,7 +172,7 @@ export class HomeComponent extends BaseComponent implements OnInit {
                 if (userProfile.businessPhones.length > 0) {
                     phone = userProfile.businessPhones[0];
                 }
-                node.profile = new UserProfile(userProfile.displayName, userProfile.mail, userProfile.jobTitle, phone, userProfile.officeLocation);
+                node.profile = new UserProfile(userProfile.mail, "", 0, userProfile.displayName, userProfile.jobTitle, phone, userProfile.officeLocation);
                 this.selectedNodeProfile = node.profile;
                 this.isLoadingProfile = false;
             },
@@ -216,39 +216,50 @@ export class HomeComponent extends BaseComponent implements OnInit {
             }
             let count = 0;
             entities.forEach(t => {
+                this.entityCards.push(new UserProfile(t.email, t.label, t.rank));
+            });
+
+            this.entityCards.forEach(t => {
                 this.msGraphService.getUserProfile(t.email).subscribe((userProfile: any) => {
                     let phone = "";
                     if (userProfile.businessPhones.length > 0) {
                         phone = userProfile.businessPhones[0];
                     }
-                    let profile = new UserProfile(userProfile.displayName,
-                        userProfile.userPrincipalName, userProfile.jobTitle,
-                        phone, userProfile.officeLocation,
-                        t.label, Constants.defaultImage, t.rank);
-                    this.msGraphService.getPhotoByUpn(profile.email).pipe(
+                    t.jobTitle = userProfile.jobTitle;
+                    t.location = userProfile.officeLocation;
+                    t.name = userProfile.displayName;
+                    t.phone = phone;
+                    if (!t.photo) {
+                        t.photo = Constants.defaultImage;
+                    }
+                },
+                (error) => {
+                    this.isNotFound = true;
+                    this.notFoundTip = `can't fetch the profile of ${t.email}`;
+                    this.logger.error(`${this.notFoundTip} error: `, error);
+                })
+            });
+
+            this.entityCards.forEach(t => {
+                    this.msGraphService.getPhotoByUpn(t.email)
+                    .pipe(
                         finalize(() => {
                             if (++count == entityCount) {
                                 this.isSearching = false;
                             }
-                            this.entityCards.push(profile);
-                            this.entityCards.sort((a,b) => a.rank - b.rank)
-                        })
-                    ).subscribe((photoBlob) => {
-                        this.createImageFromBlob(photoBlob, profile);
+                            this.entityCards.sort((a,b) => a.rank - b.rank);
+                        }
+                    ))
+                    .subscribe((photoBlob) => {
+                        this.createImageFromBlob(photoBlob, t);
                     },
-                        (error) => {
-                            //this.isNotFound = true;
-                            this.notFoundTip = `can't fetch the photo of ${userProfile.userPrincipalName}`;
-                            this.logger.error(`${this.notFoundTip} error: `, error);
-                        })
-                },
                     (error) => {
-                        this.isNotFound = true;
-                        this.notFoundTip = `can't fetch the profile of ${t.email}`;
+                        //this.isNotFound = true;
+                        this.notFoundTip = `can't fetch the photo of ${t.name}`;
                         this.logger.error(`${this.notFoundTip} error: `, error);
                     })
-            });
-        })
+                });
+            });    
     }
 
     //upn is entity's eamil in general
@@ -259,7 +270,8 @@ export class HomeComponent extends BaseComponent implements OnInit {
         this.isBack = true;
     }
 
-    switchToEntityCards(){
+    backToEntityCards(){
+        this.isShowPane = false;
         this.isEntityCard = true;
         this.query = this.keyWords; 
     }
