@@ -3,7 +3,7 @@ import { MsalConfig } from "../app/helper/msal/msal-config";
 
 export const environmentDev = {
     production: false,
-    serverBaseUrl: "https://ods-db/api",
+    serverBaseUrl: "https://helpmeconnectdevapi.azurewebsites.net/api",
     msGraphBaseUrl: "https://graph.microsoft.com/v1.0",
     logLevel: LoggerLevel.Trace,
     //params detail: https://github.com/azuread/microsoft-authentication-library-for-js/wiki/MSAL-basics
