@@ -14,16 +14,20 @@ import { AppRoutingModule } from './app-routing.module';
 import { PageNotFoundComponent } from './component/notFound/pageNotFound.Component';
 import { HomeModule } from './component/home/home.module';
 import { CommonModule } from '../../node_modules/@angular/common';
+import { SearchComponent } from './component/search/search.component';
+import { GraphComponent } from './component/graph/graph.component';
+import { FormsModule } from '../../node_modules/@angular/forms';
 
 
 @NgModule({
     declarations: [
         AppComponent,
-        PageNotFoundComponent,
+        PageNotFoundComponent
     ],
     imports: [
         CommonModule,
         BrowserModule,
+        FormsModule,
         HttpClientModule,
         MsalModule.forRoot(environment.msalConfig),
         PipeModule,

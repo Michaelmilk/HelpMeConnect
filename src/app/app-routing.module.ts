@@ -1,12 +1,15 @@
 import { Routes, RouterModule } from "@angular/router";
 import { PageNotFoundComponent } from "./component/notFound/pageNotFound.Component";
 import { NgModule } from "@angular/core";
-import { HomeComponent } from "./component/home/home.component";
 
 const appRoutes: Routes = [
     {
         path: '',
         loadChildren: './component/home/home.module#HomeModule'
+    },
+    {
+        path: 'search',
+        loadChildren: './component/search/search.module#SearchModule'
     },
     { path: '**', component: PageNotFoundComponent }
 ];

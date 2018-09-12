@@ -8,6 +8,7 @@ import { MsGraphService } from './component/base/msGraphService';
 import { AuthUser } from './core/authUser';
 import { interval, observable, timer } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { Router, ActivatedRoute } from '../../node_modules/@angular/router';
 
 @Component({
     selector: 'app-root',
@@ -20,11 +21,12 @@ export class AppComponent extends BaseComponent implements OnInit {
 
     constructor(
         protected logger: Logger,
+        private router: Router,
         private msalService: MsalService,
         private msGraphService: MsGraphService
     ) {
         super(logger);
-
+        console.log(this.router.url);
         this.msalService.authenticated.then((isAuthenticated: boolean) => {
             this.logger.info("isauth", isAuthenticated);
             if (!isAuthenticated) {
@@ -35,6 +37,8 @@ export class AppComponent extends BaseComponent implements OnInit {
 
     ngOnInit() {
         this.user = new AuthUser();
+       // this.href = this.router.url;
+        
 
         this.timeInterval = interval(1000)
             .pipe(switchMap(() => this.msalService.getUser()))

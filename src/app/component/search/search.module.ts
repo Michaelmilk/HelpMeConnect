@@ -1,0 +1,29 @@
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { NgxGraphModule } from '@swimlane/ngx-graph';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { SearchComponent } from './search.component';
+import { SearchService } from './search.service';
+import { SearchRoutingModule } from './search-routing.module';
+
+@NgModule({
+    declarations: [
+       SearchComponent
+    ],
+    imports: [
+        CommonModule,
+        HttpClientModule,
+        FormsModule,
+        SearchRoutingModule,
+        NgxGraphModule,
+        NgxChartsModule,
+    ],
+    providers: [
+        SearchService
+    ]
+})
+export class SearchModule { }
