@@ -75,6 +75,14 @@ export class HomeComponent extends BaseComponent implements OnInit {
                 if (user.displayableId && !this.user.email) {
                     this.logger.info("user", user);
                     this.user = new AuthUser(user.name, user.displayableId);
+                    this.msGraphService.getPhotoByUpn(this.user.email).subscribe((result) => {
+                        this.createImageFromBlob(result, this.user);
+                        this.logger.info("photo", this.user);
+                    },
+                    (error) => {
+                            this.notFoundTip = `can't fetch the photo of ${this.user.email}`;
+                            this.logger.error(`${this.notFoundTip} error: `, error);
+                    })
                     this.logger.info("clear time interval", this.user.email);
                     this.timeInterval.unsubscribe();
                 }

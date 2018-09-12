@@ -1,6 +1,17 @@
 html, 
+* {
+    box-shadow: none !important;
+    outline: none !important;
+    border-radius: 0;
+    /* border-width: 0; */
+}
+
 body {
     height: 100%;
+}
+
+.form-control:focus {
+    border-color: #ced4da;
 }
 
 .user-photo {
@@ -20,6 +31,9 @@ body {
     height: 50px;
     margin: 0 auto;
 }
+
+
+
 
 
 .detail-infos{
