@@ -26,7 +26,7 @@ export class AppComponent extends BaseComponent implements OnInit {
         public msGraphService: MsGraphService
     ) {
         super(logger);
-        console.log(this.router.url);
+        
         this.msalService.authenticated.then((isAuthenticated: boolean) => {
             this.logger.info("isauth", isAuthenticated);
             if (!isAuthenticated) {
