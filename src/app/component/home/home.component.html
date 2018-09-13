@@ -23,17 +23,15 @@
             <div class="col col-lg-5 text-center">
                 <h1 class="text-center text-secondary mb-4">
                     <!-- <img class="mr-4" height="80" src="../../../assets/images/Microsoft_logo.png" alt="">  -->
-                    <span>Help</span> <span>Me</span> <span>Connect</span>
+                    <span class="text-green">Help</span>&nbsp;<span class="text-yellow">Me</span>&nbsp;<span class="text-blue">Connect</span>
                     <!-- <img class="mr-4" height="0" src="../../../assets/images/user.png" alt=""> -->
                 </h1>
 
                 <div class="input-group">
                     <input type="text" class="form-control h-50px" name="root-search" [(ngModel)]="query" placeholder="Search for..." (keyup.enter)="search(query)"
                         autofocus>
-                    <div class="input-group-append">
-                        <button class="btn btn-default input-group-text h-50px" type="button" (click)="search(query)">
-                            <i class="fa fa-search text-success"></i>
-                        </button>
+                    <div class="input-group-btn icon-search text-secondary">
+                        <i class="fa fa-search fa-lg"></i>
                     </div>
                 </div>
             </div>

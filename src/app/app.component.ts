@@ -22,8 +22,8 @@ export class AppComponent extends BaseComponent implements OnInit {
     constructor(
         protected logger: Logger,
         private router: Router,
-        private msalService: MsalService,
-        private msGraphService: MsGraphService
+        public msalService: MsalService,
+        public msGraphService: MsGraphService
     ) {
         super(logger);
         console.log(this.router.url);
@@ -36,23 +36,7 @@ export class AppComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.user = new AuthUser();
-       // this.href = this.router.url;
-        
-
-        this.timeInterval = interval(1000)
-            .pipe(switchMap(() => this.msalService.getUser()))
-            .subscribe((user: any) => {
-                if (user.displayableId && !this.user.email) {
-                    this.logger.info("user", user);
-                    this.user = new AuthUser(user.name, user.displayableId);
-                    this.msGraphService.getPhotoByUpn(this.user.email).subscribe((photoBlob) => {
-                        this.createImageFromBlob(photoBlob, this.user);
-                    })
-                    this.logger.info("clear time interval", this.user.email);
-                    this.timeInterval.unsubscribe();
-                }
-            });
+    
     }
 
     logout() {

@@ -1,0 +1,44 @@
+.user-photo {
+    width: 35px !important;
+}
+
+.logo{
+    height: 24px;
+}
+
+.input-group{
+    width: 600px;
+    position: relative;
+}
+
+.icon-search{
+    position: absolute;
+    right: 10px;
+    top: 15px;
+    z-index: 9
+}
+
+.search{
+    width: 600px;
+    height: 50px;
+    margin: 0 auto;
+    border-radius: 0;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.detail-infos{
+    padding: 15px;
+    background: #dcdcdc;
+    border: 1px solid #dddddd;
+}
+
+.strength-line{
+    display: inline-block;
+    width: 50px;
+    height: 5px;
+}
+
+.word-break-all {
+    word-break: break-all;
+}

@@ -11,6 +11,10 @@ const appRoutes: Routes = [
         path: 'search',
         loadChildren: './component/search/search.module#SearchModule'
     },
+    {
+        path: 'graph',
+        loadChildren: './component/graph/graph.module#GraphModule'
+    },
     { path: '**', component: PageNotFoundComponent }
 ];
 

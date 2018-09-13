@@ -26,46 +26,33 @@ body {
     margin-top: 10%;
 }
 
-.root-search{
-    width: 100%;
-    height: 50px;
-    margin: 0 auto;
-}
-
 .h-50px {
     height: 50px !important;
 }
 
-
-
-
-.detail-infos{
-    padding: 15px;
-    background: #dcdcdc;
-    border: 1px solid #dddddd;
-}
-
-.strength-line{
-    display: inline-block;
-    width: 50px;
-    height: 5px;
-}
-
-.shadow-less {
-    box-shadow: none !important;
-    outline: none !important;
-    border-width: 0;
-}
-
-
-.word-break-all {
-    word-break: break-all;
-}
-
-.w-80 {
-    width: 80%;
-}
-
 .point{
     cursor: pointer;
+}
+
+.text-green{
+    color: #81b900;
+}
+
+.text-yellow{
+    color: #ffb902;
+}
+
+.text-blue{
+    color: #01a4ef;
+}
+
+.input-group{
+    position: relative;
+}
+
+.icon-search{
+    position: absolute;
+    right: 10px;
+    top: 15px;
+    z-index: 9
 }
