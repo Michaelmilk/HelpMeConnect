@@ -30,8 +30,8 @@ body {
     height: 50px !important;
 }
 
-.point{
-    cursor: pointer;
+.text-red{
+    color: #f44e24;
 }
 
 .text-green{

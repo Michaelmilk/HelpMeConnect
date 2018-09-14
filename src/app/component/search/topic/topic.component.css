@@ -1,0 +1,31 @@
+.pd-15{
+    padding: 15px;
+}
+
+.no-border{
+    border: none;
+}
+
+.box-shadow{
+    box-shadow: 0 0 15px rgba(0,0,0,0.5)
+}
+
+.hover:hover{
+    background: rgba(0,123,255,0.1)
+}
+
+.photo{
+    width: 50%;
+}
+
+.word-break-all {
+    word-break: break-all;
+}
+
+.w-80 {
+    width: 80%;
+}
+
+.pl-155{
+    padding-left: 155px
+}

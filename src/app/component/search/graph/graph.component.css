@@ -1,0 +1,19 @@
+.detail-infos{
+    padding: 15px;
+    background: #dcdcdc;
+    border: 1px solid #dddddd;
+}
+
+.strength-line{
+    display: inline-block;
+    width: 50px;
+    height: 5px;
+}
+
+.word-break-all {
+    word-break: break-all;
+}
+
+.point{
+    cursor: pointer;
+}

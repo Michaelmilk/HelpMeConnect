@@ -12,10 +12,7 @@ import { MsGraphService } from './component/base/msGraphService';
 import { PipeModule } from './pipe/pipe.module';
 import { AppRoutingModule } from './app-routing.module';
 import { PageNotFoundComponent } from './component/notFound/pageNotFound.Component';
-import { HomeModule } from './component/home/home.module';
 import { CommonModule } from '../../node_modules/@angular/common';
-import { SearchComponent } from './component/search/search.component';
-import { GraphComponent } from './component/graph/graph.component';
 import { FormsModule } from '../../node_modules/@angular/forms';
 
 

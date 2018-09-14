@@ -7,6 +7,7 @@ import { switchMap } from '../../../../node_modules/rxjs/operators';
 import { MsalService } from '../../helper/msal/msal.service';
 import { MsGraphService } from './msGraphService';
 import { Constants } from '../../core/constants';
+import { Router } from '../../../../node_modules/@angular/router';
 
 
 export class BaseComponent {
@@ -14,15 +15,21 @@ export class BaseComponent {
     user: AuthUser;
     timeInterval: any;
     notFoundTip: string = Constants.notFoundTip;
+    query: string;
 
     constructor(
         protected logger: Logger,
+        public router: Router,
         public msalService?: MsalService,
         public msGraphService?: MsGraphService
     ) { }
 
-    ngOnInit(){
-        
+    ngOnInit() {
+
+    }
+
+    logout() {
+        this.msalService.logout();
     }
 
     //https://stackblitz.com/edit/angular-1yr75s?file=src%2Fapp%2Fapp.component.html
@@ -40,7 +47,7 @@ export class BaseComponent {
         }
     }
 
-    getUserInfos():any{
+    getUserInfos(): any {
         this.user = new AuthUser();
         return this.timeInterval = interval(1000)
             .pipe(switchMap(() => this.msalService.getUser()))
@@ -60,5 +67,26 @@ export class BaseComponent {
                     this.timeInterval.unsubscribe();
                 }
             });
+    }
+
+    search(query: string) {
+        if (!query) {
+            return;
+        }
+        this.query = query;
+        
+        if (query.indexOf("@") != -1) {
+            this.router.navigate(["search/graph"], {
+                queryParams: {
+                    "query": query.trim()
+                }
+            });
+        } else {
+            this.router.navigate(["search/topic"], {
+                queryParams: {
+                    "query": query.trim()
+                }
+            });
+        }
     }
 }

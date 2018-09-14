@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { UserProfile, AuthUser } from '../../core/authUser';
+import { UserProfile, AuthUser } from '../../../core/authUser';
 import * as shape from 'd3-shape';
-import { Logger } from '../../helper/logger';
-import { BaseComponent } from '../base/base.component';
+import { Logger } from '../../../helper/logger';
+import { BaseComponent } from '../../base/base.component';
 import { GraphService } from './graph.service';
-import { switchMap, finalize } from '../../../../node_modules/rxjs/operators';
-import { MsalService } from '../../helper/msal/msal.service';
-import { MsGraphService } from '../base/msGraphService';
-import { ActivatedRoute, Router } from '../../../../node_modules/@angular/router';
-import { Constants } from '../../core/constants';
-import { GraphLink, GraphNode, LinkedGraph } from '../../core/graph/linkedGraph';
+import { switchMap, finalize } from '../../../../../node_modules/rxjs/operators';
+import { MsalService } from '../../../helper/msal/msal.service';
+import { MsGraphService } from '../../base/msGraphService';
+import { ActivatedRoute, Router } from '../../../../../node_modules/@angular/router';
+import { Constants } from '../../../core/constants';
+import { GraphLink, GraphNode, LinkedGraph } from '../../../core/graph/linkedGraph';
 
 @Component({
     selector: 'app-graph',
@@ -22,7 +22,6 @@ export class GraphComponent extends BaseComponent implements OnInit {
     isNotFound: boolean;
     isSearching: boolean;
     isShowStrengthList: boolean;
-    query: string;
     notFoundTip: string = Constants.notFoundTip;
 
     linkedGraph: LinkedGraph;
@@ -47,21 +46,22 @@ export class GraphComponent extends BaseComponent implements OnInit {
     orientation: string = "LR";
     curve: any = shape.curveBundle.beta(1);
     selectedNodeProfile: UserProfile;
-    
+
     constructor(
         public logger: Logger,
+        public router: Router,
         private graphService: GraphService,
         public msalService: MsalService,
         public msGraphService: MsGraphService,
-        private route: ActivatedRoute,
-        private router: Router
+        private route: ActivatedRoute
     ) {
-        super(logger)
+        super(logger, router)
     }
 
     ngOnInit() {
+
         this.query = this.route.snapshot.queryParamMap.get("query");
-        this.isShowStrengthList = false;        
+        this.isShowStrengthList = false;
 
         this.selectedNodeProfile = new UserProfile();
         this.strengthList = [
@@ -94,7 +94,7 @@ export class GraphComponent extends BaseComponent implements OnInit {
         this.linkedGraph = new LinkedGraph();
         this.links = new Array<any>();
         this.nodes = new Array<any>();
-        
+
         this.getUserInfos().add(() => {
             this.searchGraph(this.query);
         })
@@ -104,18 +104,14 @@ export class GraphComponent extends BaseComponent implements OnInit {
         if (this.isSearching) {
             return;
         }
+        this.search(query);
         this.isSearching = true;
         this.isNotFound = false;
         this.notFoundTip = Constants.notFoundTip;
-        this.router.navigate(["/graph"], {
-            queryParams: {
-                "query": query.trim()
-            }
-        });
 
         this.links = [];
         this.nodes = [];
-        this.logger.info(query);
+
         this.graphService.getGraphLink(query, this.user.email).subscribe((links: Array<GraphLink>) => {
             if (links.length == 0) {
                 this.isNotFound = true;
@@ -176,7 +172,7 @@ export class GraphComponent extends BaseComponent implements OnInit {
             // if (value.endsWith("@m365x342201.onmicrosoft.com")) {
             //     img = `https://euclidepic.blob.core.windows.net/pic/${value.replace("@m365x342201.onmicrosoft.com", "")}.jpg`;
             // }
-            this.logger.info("value", value);
+            //this.logger.info("value", value);
             this.nodes.push(new GraphNode(key, Constants.defaultImage, value));
         });
 
@@ -201,7 +197,7 @@ export class GraphComponent extends BaseComponent implements OnInit {
                     })
                 ).subscribe((result) => {
                     this.createImageFromBlob(result, t);
-                    this.logger.info("photo", t);
+                    //this.logger.info("photo", t);
                 },
                     (error) => {
                         //this.isNotFound = true;

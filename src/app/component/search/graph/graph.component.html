@@ -1,42 +1,15 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light pt-4 mb-2">
-    <a class="navbar-brand text-secondary font-weight-bold d-inline" href="#">
-        <img class="mr-2 mb-1 logo" src="../assets/images/Microsoft_logo.png" />Microsoft
-    </a>
-
-    <div class="input-group">
-        <input class="form-control search" type="text" placeholder="Search" [(ngModel)]="query" (keyup.enter)="searchGraph(query)">
-        <div class="input-group-btn icon-search text-secondary">
-            <i class="fa fa-search fa-lg"></i>
-        </div>
-    </div>
-
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item dropdown mr-auto">
-                <a class="nav-link font-weight-bold d-inline" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="false" [innerHTML]="user.name">
-                </a>
-                <img class="rounded-circle ml-2 user-photo" *ngIf="user.photo" [src]="user.photo">
-                <img class="user-photo ml-2" *ngIf="!user.photo" src="../assets/images/user.png">
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#" (click)="logout()">Logout</a>
-                </div>
-            </li>
-        </ul>
-    </div>
-
-</nav>
+<search-header (emitSearch)="searchGraph($event)"></search-header>
 
 <div class="container-fluid">
     <div class="text-center mt-4" *ngIf="isSearching && !isNotFound">
         <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
         <span class="sr-only">Loading...</span>
     </div>
-    
+
     <div class="alert alert-warning text-center" role="alert" *ngIf="isNotFound">
         <span [innerHTML]="notFoundTip"></span>
     </div>
-    
+
     <div class="row" id="graph" *ngIf="isShowStrengthList && !isSearching && !isNotFound" style="height: calc(100vh - 100px);">
         <div id="ngx-graph" class="col-lg-10">
             <!-- https://qiita.com/someone7140/items/55aedd0a2cb7c9742c87 -->
@@ -48,10 +21,10 @@
                 [nodes]="linkedGraph.nodes" [scheme]="colorScheme" [orientation]="orientation" [curve]="curve" (select)="select($event)">
 
                 <!-- <ng-template #defsTemplate>
-                                    <svg:marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="4" markerHeight="4" orient="auto">
-                                        <svg:path d="M0,-5L10,0L0,5" class="arrow-head" />
-                                    </svg:marker>
-                                </ng-template> -->
+                    <svg:marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="4" markerHeight="4" orient="auto">
+                        <svg:path d="M0,-5L10,0L0,5" class="arrow-head" />
+                    </svg:marker>
+                </ng-template> -->
 
                 <ng-template #nodeTemplate let-node>
                     <svg:g class="node" ngx-tooltip [tooltipPlacement]="'top'" [tooltipType]="'tooltip'" [tooltipTitle]="node.label">
@@ -84,10 +57,10 @@
                     <svg:g class="edge">
                         <svg:path class="line" [ngStyle]="{'stroke': link.color}" stroke-width="3" marker-end="url(#arrow)"></svg:path>
                         <!-- <svg:text class="edge-label" text-anchor="middle">
-                                            <textPath style="fill: #666;" [attr.href]="'#' + link.id" startOffset="50%">
-                                                {{link.label}}
-                                            </textPath>
-                                        </svg:text> -->
+                            <textPath style="fill: #666;" [attr.href]="'#' + link.id" startOffset="50%">
+                                {{link.label}}
+                            </textPath>
+                        </svg:text> -->
                     </svg:g>
                 </ng-template>
 

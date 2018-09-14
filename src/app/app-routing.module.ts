@@ -11,17 +11,13 @@ const appRoutes: Routes = [
         path: 'search',
         loadChildren: './component/search/search.module#SearchModule'
     },
-    {
-        path: 'graph',
-        loadChildren: './component/graph/graph.module#GraphModule'
-    },
     { path: '**', component: PageNotFoundComponent }
 ];
 
 
 @NgModule({
     imports: [RouterModule.forRoot(
-        appRoutes,
+        appRoutes
         //his outputs each router event that took place during each navigation lifecycle to the browser console
         //{ enableTracing: true } // <-- debugging purposes only
     )],
