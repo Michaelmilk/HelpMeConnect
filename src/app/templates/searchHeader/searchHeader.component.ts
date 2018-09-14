@@ -28,7 +28,7 @@ export class SearchHeaderComponent extends BaseComponent implements OnInit {
 
         //https://angular.io/api/common/PlatformLocation
         //https://stackoverflow.com/questions/40381814/how-do-i-detect-user-navigating-back-in-angular2
-        this.location.onPopState(()=>{
+        this.location.onPopState(() => {
             this.query = this.location.search.split("=")[1];
             this.emitSearchToRoot(this.query)
         });
