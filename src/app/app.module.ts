@@ -12,18 +12,19 @@ import { MsGraphService } from './component/base/msGraphService';
 import { PipeModule } from './pipe/pipe.module';
 import { AppRoutingModule } from './app-routing.module';
 import { PageNotFoundComponent } from './component/notFound/pageNotFound.Component';
-import { HomeModule } from './component/home/home.module';
 import { CommonModule } from '../../node_modules/@angular/common';
+import { FormsModule } from '../../node_modules/@angular/forms';
 
 
 @NgModule({
     declarations: [
         AppComponent,
-        PageNotFoundComponent,
+        PageNotFoundComponent
     ],
     imports: [
         CommonModule,
         BrowserModule,
+        FormsModule,
         HttpClientModule,
         MsalModule.forRoot(environment.msalConfig),
         PipeModule,

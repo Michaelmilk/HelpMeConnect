@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '../../../../node_modules/@angular/router';
 import { BaseComponent } from '../base/base.component';
 import { Logger } from '../../helper/logger';
 import { MsGraphService } from '../base/msGraphService';
 import { MsalService } from '../../helper/msal/msal.service';
-import { Router } from '../../../../node_modules/@angular/router';
-
 
 @Component({
-    selector: 'app-home',
-    templateUrl: './home.component.html',
-    styleUrls: ['./home.component.css']
+    selector: 'app-search',
+    templateUrl: './search.component.html',
+    styleUrls: ['./search.component.css']
 })
-export class HomeComponent extends BaseComponent implements OnInit {
+export class SearchComponent extends BaseComponent implements OnInit {
+
     constructor(
         public logger: Logger,
         public router: Router,

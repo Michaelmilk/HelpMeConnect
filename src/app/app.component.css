@@ -1,7 +1,6 @@
-.user-photo {
-    width: 35px !important;
-}
-
-.logo{
-    height: 24px;
+* {
+    box-shadow: none !important;
+    outline: none !important;
+    border-radius: 0 !important;
+    /* border-width: 0; */
 }
