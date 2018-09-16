@@ -9,6 +9,7 @@ import { finalize, switchMap } from '../../../../../node_modules/rxjs/operators'
 import { MsalService } from '../../../helper/msal/msal.service';
 import { TopicService } from './topic.service';
 import { CacheService } from '@ngx-cache/core';
+import { LocalStorage } from '@ngx-pwa/local-storage';
 
 @Component({
     selector: 'app-topic',
@@ -30,9 +31,10 @@ export class TopicComponent extends BaseComponent implements OnInit {
         public msGraphService: MsGraphService,
         private topicService: TopicService,
         public cacheService: CacheService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        public localStorage: LocalStorage
     ) {
-        super(logger, router, msalService, msGraphService, cacheService);
+        super(logger, router, msalService, msGraphService, cacheService, localStorage);
     }
 
     ngOnInit() {

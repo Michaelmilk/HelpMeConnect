@@ -42,6 +42,11 @@ export class BaseComponent {
                 $(<any>'.image' + user.id).attr("xlink:href", user.photo);
             }
 
+            if (user.email == this.user.email) {
+                this.localStorage.setItem("user", user).subscribe(() => {});
+            }
+
+
             if (user.email == this.user.email 
                 && this.cacheService.has("user") 
                 && !this.cacheService.get("user").photo) {
@@ -56,6 +61,35 @@ export class BaseComponent {
 
     getUserInfos(): any {
         this.logger.info("cacheservice11", this.cacheService, this.cacheService.has("user"));
+
+        // return this.localStorage.getItem("user").subscribe((user: any) => {
+        //     this.logger.info("return user", user);
+
+        //     if (user) {
+        //         this.logger.info("has user", user);
+        //         this.user = user;
+        //     }
+        //     else {
+        //         this.timeInterval = interval(1000)
+        //         .pipe(switchMap(() => this.msalService.getUser()))
+        //         .subscribe((user: any) => {
+        //             if (user.displayableId && !this.user.email) {
+        //                 this.logger.info("user", user);
+        //                 this.user = new AuthUser(user.name, user.displayableId);
+        //                 this.msGraphService.getPhotoByUpn(this.user.email).subscribe((result) => {
+        //                     this.createImageFromBlob(result, this.user);
+        //                     this.logger.info("photo", this.user);
+        //                 },
+        //                     (error) => {
+        //                         this.notFoundTip = `can't fetch the photo of ${this.user.email}`;
+        //                         this.logger.error(`${this.notFoundTip} error: `, error);
+        //                     })
+        //                 this.logger.info("clear time interval", this.user.email);
+        //                 this.timeInterval.unsubscribe();
+        //             }
+        //         });
+        //     }
+        // })
 
         if (this.cacheService.has("user")) {
 
