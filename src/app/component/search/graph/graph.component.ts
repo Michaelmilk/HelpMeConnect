@@ -10,6 +10,7 @@ import { MsGraphService } from '../../base/msGraphService';
 import { ActivatedRoute, Router } from '../../../../../node_modules/@angular/router';
 import { Constants } from '../../../core/constants';
 import { GraphLink, GraphNode, LinkedGraph } from '../../../core/graph/linkedGraph';
+import { CacheService } from '@ngx-cache/core';
 
 @Component({
     selector: 'app-graph',
@@ -53,6 +54,7 @@ export class GraphComponent extends BaseComponent implements OnInit {
         private graphService: GraphService,
         public msalService: MsalService,
         public msGraphService: MsGraphService,
+        public cacheService: CacheService,
         private route: ActivatedRoute
     ) {
         super(logger, router)

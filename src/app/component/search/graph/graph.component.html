@@ -1,4 +1,4 @@
-<search-header (emitSearch)="searchGraph($event)"></search-header>
+<search-header (emitSearch)="searchGraph($event)" [user] ="user"></search-header>
 
 <div class="container-fluid">
     <div class="text-center mt-4" *ngIf="isSearching && !isNotFound">

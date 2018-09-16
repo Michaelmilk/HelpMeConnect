@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, BrowserTransferStateModule, TransferState } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
@@ -14,7 +14,18 @@ import { AppRoutingModule } from './app-routing.module';
 import { PageNotFoundComponent } from './component/notFound/pageNotFound.Component';
 import { CommonModule } from '../../node_modules/@angular/common';
 import { FormsModule } from '../../node_modules/@angular/forms';
+import { CacheModule, CacheLoader, CacheStaticLoader, CACHE } from '@ngx-cache/core';
+import { BrowserCacheModule, MemoryCacheService, LocalStorageCacheService } from '@ngx-cache/platform-browser';
 
+export function cacheFactory(): CacheLoader {
+    return new CacheStaticLoader({
+        key: 'NGX_CACHE',
+        lifeSpan: {
+            "expiry": 86400000,//one day's miliseconds
+            "TTL": 86400000
+        }
+    });
+}
 
 @NgModule({
     declarations: [
@@ -29,6 +40,17 @@ import { FormsModule } from '../../node_modules/@angular/forms';
         MsalModule.forRoot(environment.msalConfig),
         PipeModule,
         AppRoutingModule,
+        // CacheModule.forRoot({
+        //     provide: CacheLoader,
+        //     useFactory: (cacheFactory)
+        // }),
+        CacheModule.forRoot(),
+        BrowserCacheModule.forRoot([
+            {
+                provide: CACHE,
+                useClass:  LocalStorageCacheService// or, MemoryCacheService
+            }
+        ]),
     ],
     providers: [
         Logger,
@@ -39,7 +61,8 @@ import { FormsModule } from '../../node_modules/@angular/forms';
             useClass: MsalInterceptor,
             multi: true
         },
-        MsGraphService
+        MsGraphService,
+        TransferState
     ],
     bootstrap: [AppComponent]
 })

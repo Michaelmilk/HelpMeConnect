@@ -2,13 +2,14 @@ import { Logger } from '../../helper/logger';
 import * as $ from 'jquery';
 import { Connection } from '../../core/graph/linkedGraph';
 import { AuthUser } from '../../core/authUser';
-import { interval } from '../../../../node_modules/rxjs';
+import { interval, observable, Observable, empty } from '../../../../node_modules/rxjs';
 import { switchMap } from '../../../../node_modules/rxjs/operators';
 import { MsalService } from '../../helper/msal/msal.service';
 import { MsGraphService } from './msGraphService';
 import { Constants } from '../../core/constants';
 import { Router } from '../../../../node_modules/@angular/router';
-
+import { CacheService } from '@ngx-cache/core';
+import { LocalStorage, LocalDatabase } from '@ngx-pwa/local-storage';
 
 export class BaseComponent {
     Connection: typeof Connection = Connection;
@@ -21,10 +22,11 @@ export class BaseComponent {
         protected logger: Logger,
         public router: Router,
         public msalService?: MsalService,
-        public msGraphService?: MsGraphService
-    ) { }
-
-    ngOnInit() {
+        public msGraphService?: MsGraphService,
+        public cacheService?: CacheService,
+        public localStorage?: LocalDatabase
+    ) { 
+        this.user = new AuthUser();
     }
 
     logout() {
@@ -39,6 +41,12 @@ export class BaseComponent {
             if (user.id) {
                 $(<any>'.image' + user.id).attr("xlink:href", user.photo);
             }
+
+            if (user.email == this.user.email 
+                && this.cacheService.has("user") 
+                && !this.cacheService.get("user").photo) {
+                    this.cacheService.set("user", user);
+            }
         }, false);
 
         if (image) {
@@ -47,25 +55,39 @@ export class BaseComponent {
     }
 
     getUserInfos(): any {
-        this.user = new AuthUser();
-        return this.timeInterval = interval(1000)
-            .pipe(switchMap(() => this.msalService.getUser()))
-            .subscribe((user: any) => {
-                if (user.displayableId && !this.user.email) {
-                    this.logger.info("user", user);
-                    this.user = new AuthUser(user.name, user.displayableId);
-                    this.msGraphService.getPhotoByUpn(this.user.email).subscribe((result) => {
-                        this.createImageFromBlob(result, this.user);
-                        this.logger.info("photo", this.user);
-                    },
-                        (error) => {
-                            this.notFoundTip = `can't fetch the photo of ${this.user.email}`;
-                            this.logger.error(`${this.notFoundTip} error: `, error);
-                        })
-                    this.logger.info("clear time interval", this.user.email);
-                    this.timeInterval.unsubscribe();
-                }
-            });
+        this.logger.info("cacheservice11", this.cacheService, this.cacheService.has("user"));
+
+        if (this.cacheService.has("user")) {
+
+            this.user = this.cacheService.get("user");
+            // return this.cacheService.get("user").subscribe((user: AuthUser) => {
+            //     this.user = user;
+            // });
+            this.logger.info("has user", this.user,  this.cacheService.has("user"), this.cacheService.get("user"));
+            
+            return empty().subscribe();
+        } else {
+            return this.timeInterval = interval(1000)
+                .pipe(switchMap(() => this.msalService.getUser()))
+                .subscribe((user: any) => {
+                    if (user.displayableId && !this.user.email) {
+                        this.logger.info("user", user);
+                        this.user = new AuthUser(user.name, user.displayableId);
+                        this.msGraphService.getPhotoByUpn(this.user.email).subscribe((result) => {
+                            this.createImageFromBlob(result, this.user);
+                            this.cacheService.set("user", this.user);
+                            this.logger.info("photo", this.user);
+                        },
+                            (error) => {
+                                this.notFoundTip = `can't fetch the photo of ${this.user.email}`;
+                                this.logger.error(`${this.notFoundTip} error: `, error);
+                            })
+                        this.logger.info("clear time interval", this.user.email);
+                        this.timeInterval.unsubscribe();
+                    }
+                });
+        }
+
     }
 
     search(query: string) {
@@ -73,7 +95,7 @@ export class BaseComponent {
             return;
         }
         this.query = query;
-        
+
         if (query.indexOf("@") != -1) {
             this.router.navigate(["search/graph"], {
                 queryParams: {

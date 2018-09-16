@@ -18,7 +18,7 @@ export class TopicService {
         public httpClient: HttpClient
     ) { }
 
-    public getConnectedEntity(query: string, user: string) {
+    public getTopicEntity(query: string, user: string) {
         const httpParams = new HttpParams()
             .set("topic", query)
             .set("user_email", user);

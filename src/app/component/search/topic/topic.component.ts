@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { AuthUser, UserProfile } from '../../../core/authUser';
 import { Router, ActivatedRoute } from '../../../../../node_modules/@angular/router';
 import { Constants } from '../../../core/constants';
-import { GraphLink, GraphNode, LinkedGraph } from '../../../core/graph/linkedGraph';
 import { BaseComponent } from '../../base/base.component';
 import { Logger } from '../../../helper/logger';
 import { MsGraphService } from '../../base/msGraphService';
 import { finalize, switchMap } from '../../../../../node_modules/rxjs/operators';
 import { MsalService } from '../../../helper/msal/msal.service';
 import { TopicService } from './topic.service';
+import { CacheService } from '@ngx-cache/core';
 
 @Component({
     selector: 'app-topic',
@@ -29,15 +29,16 @@ export class TopicComponent extends BaseComponent implements OnInit {
         public msalService: MsalService,
         public msGraphService: MsGraphService,
         private topicService: TopicService,
+        public cacheService: CacheService,
         private route: ActivatedRoute
     ) {
-        super(logger, router);
+        super(logger, router, msalService, msGraphService, cacheService);
     }
 
     ngOnInit() {
         this.query = this.route.snapshot.queryParamMap.get("query");
         this.preQuery = this.query;
-
+        this.logger.info("user", this.user);
         if (!this.entityCards) {
             this.entityCards = new Array<UserProfile>();
             this.getUserInfos().add(() => {
@@ -57,7 +58,7 @@ export class TopicComponent extends BaseComponent implements OnInit {
         this.preQuery = query;
 
         this.entityCards = new Array<UserProfile>();
-        this.topicService.getConnectedEntity(query, this.user.email).subscribe((entities: any) => {
+        this.topicService.getTopicEntity(query, this.user.email).subscribe((entities: any) => {
             let entityCount = entities.length;
             if (entityCount == 0) {
                 this.isNotFound = true;

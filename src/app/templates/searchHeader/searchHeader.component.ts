@@ -1,10 +1,11 @@
-import { Component, OnInit, Output, EventEmitter } from "../../../../node_modules/@angular/core";
+import { Component, OnInit, Output, EventEmitter, Input } from "../../../../node_modules/@angular/core";
 import { BaseComponent } from "../../component/base/base.component";
 import { Logger } from '../../helper/logger';
 import { MsalService } from "../../helper/msal/msal.service";
 import { MsGraphService } from "../../component/base/msGraphService";
 import { ActivatedRoute, Router } from "../../../../node_modules/@angular/router";
 import { PlatformLocation } from "../../../../node_modules/@angular/common";
+import { CacheService } from "@ngx-cache/core";
 
 @Component({
     selector: 'search-header',
@@ -12,20 +13,18 @@ import { PlatformLocation } from "../../../../node_modules/@angular/common";
     styleUrls: ['./searchHeader.component.css']
 })
 
-export class SearchHeaderComponent extends BaseComponent implements OnInit {
-
+export class SearchHeaderComponent implements OnInit {
+    @Input() user;
     @Output() emitSearch = new EventEmitter<string>();
+
+    query: string;
 
     constructor(
         public logger: Logger,
         public router: Router,
-        public msalService: MsalService,
-        public msGraphService: MsGraphService,
         private route: ActivatedRoute,
-        public location: PlatformLocation
+        public location: PlatformLocation,
     ) {
-        super(logger, router);
-
         //https://angular.io/api/common/PlatformLocation
         //https://stackoverflow.com/questions/40381814/how-do-i-detect-user-navigating-back-in-angular2
         this.location.onPopState(() => {
@@ -36,11 +35,9 @@ export class SearchHeaderComponent extends BaseComponent implements OnInit {
 
     ngOnInit() {
         this.query = this.route.snapshot.queryParamMap.get("query");
-        this.getUserInfos();
     }
 
     emitSearchToRoot(query: string) {
         this.emitSearch.emit(query);
     }
-
 }

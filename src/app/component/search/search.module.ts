@@ -3,8 +3,6 @@ import { CommonModule } from '@angular/common';
 
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { NgxGraphModule } from '@swimlane/ngx-graph';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { SearchComponent } from './search.component';
 import { SearchService } from './search.service';
 import { SearchRoutingModule } from './search-routing.module';
@@ -17,9 +15,7 @@ import { SearchRoutingModule } from './search-routing.module';
         CommonModule,
         HttpClientModule,
         FormsModule,
-        NgxGraphModule,
-        NgxChartsModule,
-        SearchRoutingModule,
+        SearchRoutingModule
     ],
     providers: [
         SearchService

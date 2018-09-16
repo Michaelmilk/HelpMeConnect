@@ -1,4 +1,4 @@
-<search-header (emitSearch)="searchKeyWords($event)"></search-header>
+<search-header (emitSearch)="searchKeyWords($event)" [user]="user"></search-header>
 
 <div class="container-fluid pl-155">
     <div class="text-center mt-4" *ngIf="isSearching && !isNotFound">

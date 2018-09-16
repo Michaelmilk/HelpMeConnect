@@ -4,6 +4,7 @@ import { Logger } from '../../helper/logger';
 import { MsGraphService } from '../base/msGraphService';
 import { MsalService } from '../../helper/msal/msal.service';
 import { Router } from '../../../../node_modules/@angular/router';
+import { CacheService } from '@ngx-cache/core';
 
 
 @Component({
@@ -16,9 +17,10 @@ export class HomeComponent extends BaseComponent implements OnInit {
         public logger: Logger,
         public router: Router,
         public msalService: MsalService,
-        public msGraphService: MsGraphService
+        public msGraphService: MsGraphService,
+        public cacheService: CacheService
     ) {
-        super(logger, router, msalService, msGraphService);
+        super(logger, router, msalService, msGraphService, cacheService);
     }
 
     ngOnInit() {
