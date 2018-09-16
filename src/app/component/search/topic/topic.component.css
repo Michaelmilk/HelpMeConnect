@@ -29,3 +29,7 @@
 .pl-155{
     padding-left: 155px
 }
+
+.card > .card-body {
+    min-height: 125px;
+}

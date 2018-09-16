@@ -18,7 +18,7 @@ export class HomeComponent extends BaseComponent implements OnInit {
         public msalService: MsalService,
         public msGraphService: MsGraphService
     ) {
-        super(logger, router);
+        super(logger, router, msalService, msGraphService);
     }
 
     ngOnInit() {

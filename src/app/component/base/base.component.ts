@@ -25,7 +25,6 @@ export class BaseComponent {
     ) { }
 
     ngOnInit() {
-
     }
 
     logout() {

@@ -20,9 +20,7 @@ import { SearchHeaderModule } from '../../../templates/searchHeader/searchHeader
         HttpClientModule,
         FormsModule,
         SearchHeaderModule,
-        TopicRoutingModule,
-        NgxGraphModule,
-        NgxChartsModule,
+        TopicRoutingModule
     ],
     providers: [
         TopicService

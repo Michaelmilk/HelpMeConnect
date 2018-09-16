@@ -18,9 +18,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
         CommonModule,
         HttpClientModule,
         FormsModule,
-        HomeRoutingModule,
-        NgxGraphModule,
-        NgxChartsModule,
+        HomeRoutingModule
     ],
     providers: [
         HomeService
