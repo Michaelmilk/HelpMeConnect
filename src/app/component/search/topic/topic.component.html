@@ -21,7 +21,10 @@
             <div class="col-lg-2" *ngFor="let entityCard of entityCards; trackBy: index">
                 <div class="card no-border hover box-shadow pd-15">
                     <div class="text-center">
-                        <img class="rounded-circle pointer photo" *ngIf="entityCard.photo" [src]="entityCard.photo" alt="Card image cap" (click)="search(entityCard.email)">
+                        <!-- <img class="rounded-circle pointer photo" *ngIf="entityCard.photo" [src]="entityCard.photo" alt="Card image cap" (click)="search(entityCard.email)"> -->
+                        <img class="rounded-circle pointer photo" *ngIf="entityCard.photo" 
+                            [src]="entityCard.photo" alt="Card image cap" 
+                            [routerLink]="['/search/graph']" [queryParams]="{query: entityCard.email}">
                     </div>
                     <div class="card-body">
                         <h5 class="card-title text-center" [innerHTML]="entityCard.name"></h5>
