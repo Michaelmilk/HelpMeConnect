@@ -23,8 +23,7 @@ export class BaseComponent {
         public router: Router,
         public msalService?: MsalService,
         public msGraphService?: MsGraphService,
-        public cacheService?: CacheService,
-        public localStorage?: LocalDatabase
+        public cacheService?: CacheService
     ) { 
         this.user = new AuthUser();
     }
@@ -41,11 +40,6 @@ export class BaseComponent {
             if (user.id) {
                 $(<any>'.image' + user.id).attr("xlink:href", user.photo);
             }
-
-            if (user.email == this.user.email) {
-                this.localStorage.setItem("user", user).subscribe(() => {});
-            }
-
 
             if (user.email == this.user.email 
                 && this.cacheService.has("user") 
@@ -92,11 +86,7 @@ export class BaseComponent {
         // })
 
         if (this.cacheService.has("user")) {
-
             this.user = this.cacheService.get("user");
-            // return this.cacheService.get("user").subscribe((user: AuthUser) => {
-            //     this.user = user;
-            // });
             this.logger.info("has user", this.user,  this.cacheService.has("user"), this.cacheService.get("user"));
             
             return empty().subscribe();

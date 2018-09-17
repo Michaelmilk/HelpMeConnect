@@ -31,10 +31,9 @@ export class TopicComponent extends BaseComponent implements OnInit {
         public msGraphService: MsGraphService,
         private topicService: TopicService,
         public cacheService: CacheService,
-        private route: ActivatedRoute,
-        public localStorage: LocalStorage
+        private route: ActivatedRoute
     ) {
-        super(logger, router, msalService, msGraphService, cacheService, localStorage);
+        super(logger, router, msalService, msGraphService, cacheService);
     }
 
     ngOnInit() {
