@@ -36,7 +36,6 @@
     "rxjs-compat": "6.2.2",
     "@ngx-cache/core": "6.0.0",
     "@ngx-cache/platform-browser": "6.0.0",
-    "@ngx-cache/platform-server": "6.0.0",
     "@ngx-pwa/local-storage": "6.1.0"
   },
   "devDependencies": {
